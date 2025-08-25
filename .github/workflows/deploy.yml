@@ -1,46 +1,50 @@
-name: Build and Deploy
+name: Lint, Build and Deploy
 
 on:
   push:
     branches:
-      - main  # mainにpushされたときに実行
-
+      - main
   pull_request:
     branches:
-      - main  # mainブランチへのプルリクエストが作成・更新されたときにも実行
+      - main
 
 permissions:
   contents: write
 
 jobs:
-  lint-test:
-    runs-on: ubuntu-latest  # ジョブを実行するOS
-
+  # ジョブ1: LintとTestを実行する
+  lint:
+    name: Lint and Test
+    runs-on: ubuntu-latest
     steps:
-      # リポジトリをチェックアウトする
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Node.jsを使用する
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
           cache: 'npm'
       
-      # 依存関係をインストール
       - name: Install dependencies
         run: npm install
       
       - name: Run Lint
-        run: npm run lint --if-present
+        run: npm run lint
+      
+      - name: Run Tests
+        run: npm run test --if-present
 
-  deploy:
-    runs-on:ubuntu-latest:
-    needs: lint-test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' # main push のときだけ
+  # ジョブ2: プロジェクトをビルドする
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    # `lint`ジョブが成功しないと始まらない
+    needs: lint
+    # mainブランチへのpushの時だけ実行
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
@@ -52,12 +56,36 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # プロジェクトをビルド、デプロイ
-      - name: Build
+      - name: Build project
         run: npm run generate
 
-      - name: Deploy
+      # '.output/public' ディレクトリを成果物としてアップロード
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: github-pages
+          path: ./.output/public
+
+  # ジョブ3: GitHub Pagesにデプロイする
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    # `build`ジョブが成功しないと始まらない
+    needs: build
+    # mainブランチへのpushの時だけ実行 (buildジョブと同じ条件)
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      # buildジョブがアップロードした成果物をダウンロード
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: github-pages
+
+      # ダウンロードしたファイルをデプロイ
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./.output/public
+          # ダウンロードしたファイルはカレントディレクトリに展開されるため
+          # publish_dir は '.' でOK
+          publish_dir: .
