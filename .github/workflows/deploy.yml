@@ -5,6 +5,13 @@ on:
     branches:
       - main  # mainにpushされたときに実行
 
+  pull_request:
+    branches:
+      - main  # mainブランチへのプルリクエストが作成・更新されたときにも実行
+
+permissions:
+  contents: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest  # ジョブを実行するOS
