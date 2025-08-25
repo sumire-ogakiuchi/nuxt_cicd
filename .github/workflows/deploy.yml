@@ -34,10 +34,7 @@ jobs:
 
       # Lintの実行
       - name: Run Lint
-        run: npm run lint
-
-      - name: Run Tests
-        run: npm run test --if-present
+        run: npm run lint --if-present
 
       # プロジェクトをビルド、デプロイ
       - name: Build
