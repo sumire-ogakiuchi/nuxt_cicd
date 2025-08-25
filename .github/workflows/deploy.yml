@@ -1,0 +1,36 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main  # mainにpushされたときに実行
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest  # ジョブを実行するOS
+
+    steps:
+      # リポジトリをチェックアウトする
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Node.jsを使用する
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+      
+      # 依存関係をインストール
+      - name: Install dependencies
+        run: npm install
+
+      # プロジェクトをビルド、デプロイ
+      - name: Build
+        run: npm run generate
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./output/public
