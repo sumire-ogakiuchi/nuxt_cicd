@@ -32,6 +32,10 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # Lint実行
+      - name: Run Lint
+        run: npm run lint --if-present
+
       # プロジェクトをビルド、デプロイ
       - name: Build
         run: npm run generate
