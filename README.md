@@ -1,75 +1,26 @@
-# Nuxt Minimal Starter
+# CI/CDの基本実装
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+## 実装状況
 
-## Setup
+Pull Request 作成👇
 
-Make sure to install dependencies:
+GitHub Actions で lint（ESLint）チェック が自動実行
 
-```bash
-# npm
-npm install
+問題なければレビュー & マージ可能
 
-# pnpm
-pnpm install
+--------------------------------------
 
-# yarn
-yarn install
+main ブランチにマージ👇
 
-# bun
-bun install
-```
+GitHub Actions で lint + ビルド + gh-pages へのデプロイ が自動実行
 
-## Development Server
+最新の静的サイトが自動的に GitHub Pages で公開
+ https://sumire-ogakiuchi.github.io/nuxt_cicd/
 
-Start the development server on `http://localhost:3000`:
+--------------------------------------
 
-```bash
-# npm
-npm run dev
+ワークフロー👇
+.github/workflows/deploy.yml
 
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+eslint設定👇
+eslint.config.mjs
