@@ -1,39 +1,33 @@
 // eslint.config.js
+import vueParser from "vue-eslint-parser";
+import pluginVue from "eslint-plugin-vue";
+import pluginPrettier from "eslint-plugin-prettier";
+import prettierConfig from "eslint-config-prettier";
 
 export default [
   {
-    ignores: ['.vite/'], // ビルドキャッシュなどの不要なファイルは無視
-    files: ['**/*.ts', '**/*.vue'],
+    files: ["**/*.vue", "**/*.js", "**/*.ts"],
     languageOptions: {
       parser: vueParser,
-      parserOptions: {
-        parser: tsParser,
-        ecmaVersion: 2020,
-        sourceType: 'module',
-        extraFileExtensions: ['.vue'],
-      },
     },
     plugins: {
-      vue: vuePlugin,
-      '@typescript-eslint': tsPlugin,
+      vue: pluginVue,
+      prettier: pluginPrettier,
     },
     rules: {
-      // Vue 3 に関するルール（必要に応じて調整）
-      'vue/multi-word-component-names': 'off',
-      'vue/no-unused-components': 'warn',
-      'vue/no-multiple-template-root': 'off',
-
-      // TypeScript に関するルール
-      '@typescript-eslint/no-unused-vars': 'warn',
-      '@typescript-eslint/no-explicit-any': 'warn',
+      // Vue系
+      "vue/no-unused-vars": "warn",
+      "vue/multi-word-component-names": "off",
+      // Prettierを ESLint と統合
+      "prettier/prettier": "error",
     },
-  },
-  // Prettier を最後に適用（他ルールとの競合を避けるため）
-  {
-    name: 'prettier',
-    rules: {
-      ...prettier.rules,
-    },
+    extends: [
+      // Vueの推奨ルール
+      "plugin:vue/vue3-recommended",
+      // Prettierと競合するルールを無効化
+      prettierConfig,
+    ],
   },
 ];
+
 
