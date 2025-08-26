@@ -30,7 +30,7 @@ jobs:
       
       # 依存関係をインストール
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       # prettierでコードのフォーマットをチェック
       - run: npm run prettier-format
