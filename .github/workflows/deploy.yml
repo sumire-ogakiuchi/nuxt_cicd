@@ -30,7 +30,10 @@ jobs:
       
       # 依存関係をインストール
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+
+      # ESLintでコードをチェック
+      - run: npm run lint
 
       # プロジェクトをビルド、デプロイ
       - name: Build
