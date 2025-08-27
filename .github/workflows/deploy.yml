@@ -7,22 +7,22 @@ on:
 
   pull_request:
     branches:
-      - main  # mainブランチへのプルリクエストが作成・更新されたときにも実行
+      - main
 
 permissions:
   contents: write
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest   # ← ubuntsu → ubuntu に修正
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20.x'
           cache: 'npm'
-      - name: Lint
-        run: npm run lint
+      - run: npm ci
+      - run: npm run lint
   
   test:
     if: github.event_name == 'pull_request'
@@ -34,34 +34,26 @@ jobs:
         with:
           node-version: '20.x'
           cache: 'npm'
-      - run: npm install
+      - run: npm ci
       - run: npm run test --if-present
 
-  build-and-deploy:
+    build-and-deploy:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest  # ジョブを実行するOS
+    runs-on: ubuntu-latest
     needs: lint
     steps:
-      # リポジトリをチェックアウトする
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Node.jsを使用する
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
           cache: 'npm'
       
-      # 依存関係をインストール
       - name: Install dependencies
         run: npm ci
 
-      # ESLintでコードをチェック
-      - name: Lint
-      - run: npm run lint
-
-      # プロジェクトをビルド、デプロイ
       - name: Build
         run: npm run generate
 
