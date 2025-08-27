@@ -9,15 +9,18 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
-    "format": "eslint --fix . "
+    "format": "eslint --fix ."
   },
   "dependencies": {
+    "@nuxt/eslint-config": "^1.9.0",
     "nuxt": "^4.0.3",
     "vue": "^3.5.18",
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.9.0",
-    "eslint": "^9.34.0"
+    "@stylistic/eslint-plugin": "^5.2.3",
+    "eslint": "^9.34.0",
+    "eslint-plugin-vue": "^10.4.0"
   }
 }
