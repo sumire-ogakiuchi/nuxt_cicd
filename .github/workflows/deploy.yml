@@ -3,7 +3,7 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - main  # mainにpushされたときに実行
+      - "**"
 
   pull_request:
     branches:
@@ -13,9 +13,33 @@ permissions:
   contents: write
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest  # ジョブを実行するOS
+  lint:
+    runs-on: ubuntsu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+      - run: npm run lint
+  
+  test:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+      - run: npm install
+      - run: npm run test --if-present
 
+  build-and-deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest  # ジョブを実行するOS
+    needs: lint
     steps:
       # リポジトリをチェックアウトする
       - name: Checkout repository
@@ -33,6 +57,7 @@ jobs:
         run: npm ci
 
       # ESLintでコードをチェック
+      - name: Lint
       - run: npm run lint
 
       # プロジェクトをビルド、デプロイ
