@@ -10,7 +10,7 @@ lint（ESLint）チェック が自動実行
 
 Pull Request 作成👇
 
-lint（ESLint）チェック が自動実行
+lint（ESLint）チェック、テストコード（vitest） が自動実行
 
 問題なければレビュー & マージ可能
 
