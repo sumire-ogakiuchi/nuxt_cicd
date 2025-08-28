@@ -1,0 +1,8 @@
+{
+  "eslint.experimental.useFlatConfig": true, // Flat ConfigにESLintを対応させる
+  "editor.formatOnSave": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.fixAll.eslint": "explicit"
+  },
+}

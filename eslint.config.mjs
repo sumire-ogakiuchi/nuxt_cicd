@@ -1,20 +1,13 @@
-import withNuxt from './.nuxt/eslint.config.mjs'
+import stylistic from "@stylistic/eslint-plugin";
+import withNuxt from "./.nuxt/eslint.config.mjs";
 
 export default withNuxt(
   {
-    files: ['**/*.vue', '**/*.ts'],
     rules: {
-      'no-console': 'error',
-      '@typescript-eslint/no-explicit-any': 'error',
-    },
-  },
-  {
-    files: ['**/*.vue'],
-    rules: {
-      'vue/no-multiple-template-root': 'error',
-      'vue/multi-word-component-names': 'off',
-      'vue/require-v-for-key': 'error',
-      'vue/no-use-v-if-with-v-for': 'error',
+      "vue/no-multiple-template-root": "error",
+      "vue/multi-word-component-names": "off",
+      "vue/require-v-for-key": "error",
+      "vue/no-use-v-if-with-v-for": "error",
       "@typescript-eslint/no-explicit-any": "off",
       "vue/no-v-html": "off",
       "vue/html-indent": ["error", 2, {
@@ -30,4 +23,10 @@ export default withNuxt(
       }],
     },
   },
-)
+  stylistic.configs.customize({
+    indent: 2,
+    quotes: "double",
+    semi: true,
+    braceStyle: "1tbs",
+  }),
+);
