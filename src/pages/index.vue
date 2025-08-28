@@ -1,7 +1,7 @@
 <script>
-  defineComponent({
-    name: "testPage"
-  })
+defineComponent({
+  name: "TestPage",
+});
 </script>
 <template>
   <div>
