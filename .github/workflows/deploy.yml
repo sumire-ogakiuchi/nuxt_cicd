@@ -13,34 +13,22 @@ permissions:
   contents: write
 
 jobs:
-  lint:
+  code-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
+          node-version: '22.x'
           cache: 'npm'
       - run: npm ci
       - run: npm run lint
-  
-  test:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    needs: lint
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20.x'
-          cache: 'npm'
-      - run: npm ci
       - run: npm run test
 
   build-and-deploy:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    needs: lint
+    needs: code-check
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -48,7 +36,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
+          node-version: '22.x'
           cache: 'npm'
       
       - name: Install dependencies
