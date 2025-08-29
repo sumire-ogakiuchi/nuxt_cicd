@@ -1,18 +1,11 @@
 # CI/CDの基本実装
 
 ## 実装状況
-
-push👇
-
-lint（ESLint）チェック が自動実行
-
---------------------------------------
-
-Pull Request 作成👇
+push, Pull Request 作成👇
 
 lint（ESLint）チェック、テストコード（vitest） が自動実行
 
-問題なければレビュー & マージ可能
+問題なければマージ可能
 
 --------------------------------------
 
@@ -27,6 +20,3 @@ Lint + ビルド + gh-pages へのデプロイ が自動実行
 
 ワークフロー👇
 .github/workflows/deploy.yml
-
-eslint設定👇
-eslint.config.mjs
