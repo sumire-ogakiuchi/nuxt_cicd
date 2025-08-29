@@ -28,7 +28,7 @@ jobs:
   build-and-deploy:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    needs: lint
+    needs: code-check
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
